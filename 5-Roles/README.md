@@ -101,7 +101,7 @@ git push GITREPO
 - Authenticating with Ansible Galaxy to push the custom role to Ansible Galaxy. Go to Collection -> API Token -> "ANSIBLE TOKEN"
 ```bash
 ansible-galaxy import ADITYA1234556 GITREPONAME --token APITOKEN
-# ansible-galaxy import ADITYA1234556 ansible-role --token hv4j23v4hj234vbhj1hj3
+# ansible-galaxy import ADITYA1234556 Ansible-Basics-To-Advanced --token hv4j23v4hj234vbhj1hj3
 ```
 - This step will push our custom ansible role to ansible galaxy and from there any one can use this.
 
