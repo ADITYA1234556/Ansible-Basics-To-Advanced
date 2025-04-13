@@ -1,0 +1,20 @@
+---
+- name: Get public IPs of all EC2 instances in a region
+  hosts: localhost
+  gather_facts: no
+  vars:
+    region: eu-west-2  
+  tasks:
+    - name: Gather EC2 instances info
+      amazon.aws.ec2_instance_info:
+        region: "{{ region }}"
+      register: ec2_info
+
+    - name: Print public IPs of instances
+      debug:
+        msg: |
+          {% for res in ec2_info.instances %}
+            - Instance ID: {{ res.instance_id }}
+              Public IP: {{ res.public_ip_address | default('N/A') }}
+              State: {{ res.state.name }}
+          {% endfor %}

@@ -1,0 +1,13 @@
+---
+# tasks file for mycustomrole
+- name: Install apache2
+  ansible.builtin.apt:
+    name: apache2
+    state: present 
+- name: Copy a file with owner and permissions
+  ansible.builtin.copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'

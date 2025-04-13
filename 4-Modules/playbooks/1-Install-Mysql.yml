@@ -1,0 +1,29 @@
+- name: Database setup
+  hosts: node02
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Install MySQL server
+      ansible.builtin.apt:
+        name: mysql-server
+        state: present
+    - name: Start MySQL service
+      ansible.builtin.service:
+        name: mysql
+        state: started
+        enabled: true
+    - name: Install dependencies for MySQL
+      ansible.builtin.apt:
+        name: python3-mysqldb
+        state: present
+    - name: Create MySQL database with name accounts
+      community.mysql.mysql_db:
+        name: accounts
+        state: present
+        # login_unix_socket: /var/run/mysqld/mysqld.sock #if running on Linux
+    - name: Create database user with name 'bob' and password '12345' with all database privileges
+      community.mysql.mysql_user:
+        name: aditya
+        password: 12345
+        priv: '*.*:ALL'
+        state: present

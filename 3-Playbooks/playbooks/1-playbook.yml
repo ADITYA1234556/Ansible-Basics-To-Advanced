@@ -1,0 +1,35 @@
+---
+- name: Control Plane setup of 1 server
+  become: yes
+  hosts: master_nodes
+  tasks:
+  - name: Install Apache
+    ansible.builtin.apt:
+      name: apache2
+      state: latest
+  - name: Start Service
+    ansible.builtin.service:
+      name: apache2
+      state: started
+      enabled: yes
+  - name: Copy file
+    ansible.builtin.copy:
+      src: index.html
+      dest: /var/www/html 
+- name: Worker node setup of 2 server
+  become: yes
+  hosts: worker_nodes
+  tasks:
+  - name: Install Apache
+    ansible.builtin.apt:
+      name: apache2
+      state: latest
+  - name: Start Service
+    ansible.builtin.service:
+      name: apache2
+      state: started
+      enabled: yes
+  - name: Copy file
+    ansible.builtin.copy:
+      src: index.html
+      dest: /var/www/html

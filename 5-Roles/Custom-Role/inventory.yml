@@ -1,0 +1,23 @@
+all:
+  hosts:
+    control_node:
+      ansible_host: 172.31.27.9
+    node01:
+      ansible_host: 172.31.29.230
+    node02:
+      ansible_host: 172.31.27.247
+  children:
+    worker_nodes:
+      hosts:
+        node01:
+        node02:
+    master_nodes:
+      hosts:
+        control_node:
+    group_of_groups:
+      children:
+        master_nodes:
+        worker_nodes:
+      vars:
+        ansible_ssh_private_key_file: ../adimsi.pem
+        ansible_user: ubuntu

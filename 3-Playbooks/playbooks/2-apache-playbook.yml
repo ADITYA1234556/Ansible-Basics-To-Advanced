@@ -1,0 +1,44 @@
+---
+- name: On the master machine
+  hosts: master_nodes
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Install Apache
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+    - name: Start Apache service
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: true
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: /index.html
+        dest: /var/www/html/index.html
+        owner: ubnutu
+        group: ubnutu
+        mode: '0644'
+- name: On the worker machines
+  hosts: worker_nodes
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Install Apache
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+    - name: Start Apache service
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: true
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: /index.html
+        dest: /var/www/html/index.html
+        owner: ubnutu
+        group: ubnutu
+        mode: '0644'
+        backup: yes

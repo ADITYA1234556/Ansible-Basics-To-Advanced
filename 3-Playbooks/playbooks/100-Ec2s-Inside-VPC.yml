@@ -1,0 +1,36 @@
+- name: Get EC2 IPs in a specific VPC
+  hosts: localhost
+  gather_facts: no
+  collections:
+    - amazon.aws
+
+  tasks:
+    - name: Gather info about all instances in the given VPC
+      amazon.aws.ec2_instance_info:
+        region: eu-west-2
+        filters:
+          "vpc-id": vpc-0af1b994ba0d8bf99 
+      register: ec2_info
+
+    - name: Print instance IPs
+      debug:
+        msg: |
+          Instance ID: {{ item.instance_id }}
+          Private IP: {{ item.private_ip_address }}
+          Public IP: {{ item.public_ip_address | default('N/A') }}
+      loop: "{{ ec2_info.instances }}"
+
+    - name: Show public IPs of instances
+      debug:
+        msg: "{{ item.public_ip_address }}"
+      loop: "{{ ec2_info.instances }}"
+      when: item.public_ip_address is defined
+
+    - name: Show list of public IPs
+      debug:
+        msg: "{{ public_ips }}"
+      vars:
+        public_ips: "{{ ec2_info.instances | map(attribute='public_ip_address') | select('defined') | list }}"
+
+
+# To run this playbook, install ansible galaxy collection = ansible-galaxy collection install amazon.aws AND boto3 and botocore =  pip install boto3 botocore
